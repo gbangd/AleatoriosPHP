@@ -76,7 +76,6 @@ class Aleatorios {
         return $dato2;
     }
     
-    
     //Pruebas de Frecuencia
     
     public function kolmogorov_smirnov($generador)
@@ -126,6 +125,7 @@ class Aleatorios {
         
     }
     
+    //Pruebas de Promedios
     public function promedios($generador)
     {
         $sumatoria =0;
@@ -148,6 +148,41 @@ class Aleatorios {
         
     }
     
+    public function chi_cuadrada($generador)
+    {
+        $vector = Array();
+        $vectorDeOcurrecias = Array();
+        $vectorIntervalos = Array();
+        $vectorDeFuncion = Array();
+        $tablaChicuadrada = Array();
+        
+        if($generador ==0)
+            $vector = $this->arrayPseuPosCeroUno;
+        else 
+            $vector = $this->arrayCuadradosCeroUno;
+        
+        $n = count($vector);
+        $m = (integer)sqrt($n);
+        $Ei = $n/$m;
+        
+        for($i=0;$i<$m;$i++)
+        {
+            $vectorDeOcurrecias[$i] = (int)$this->ocurrenciasEnIntervalo($vector, ($i/$m), (($i+1)/$m));
+            $temp1 = (string)($i/$m);
+            $temp2 = (string)(($i+1)/$m);
+            $vectorIntervalos[$i] = "[$temp1 - $temp2]";
+            $vectorDeFuncion[$i] = (double)(pow(($vectorDeOcurrecias[$i]-$Ei),2))/$Ei;
+        }
+        
+        $tablaChicuadrada[0] = $vectorIntervalos;
+        $tablaChicuadrada[1] = $vectorDeOcurrecias;
+        $tablaChicuadrada[2] = $vectorDeFuncion;
+//        $tablaChicuadrada[3] = $Ei;
+//        $tablaChicuadrada[4] = $m;
+        return $tablaChicuadrada;
+    }
+
+
     private function promedio($vector)
     {
         $suma =0;
@@ -205,7 +240,7 @@ class Aleatorios {
         
     }
     
-    
+    //Guardar en Archivo .csv
     public function guardarEnArchivo($generador)
     {
         $f=fopen("numerosAleatorios.csv","a+");
@@ -238,6 +273,22 @@ class Aleatorios {
             }
         }
         fclose($f);
+    }
+    
+    private function ocurrenciasEnIntervalo($vector, $inicioIntervalo, $finIntervalo)
+    {
+        $i =0;
+        $ocurrencias =0;
+        
+        while($i < count($vector))
+        {
+            if($inicioIntervalo <= $vector[$i] && $vector[$i] <= $finIntervalo)
+                $ocurrencias++;
+            
+            $i++;
+        }
+        
+        return $ocurrencias;
     }
 }
 

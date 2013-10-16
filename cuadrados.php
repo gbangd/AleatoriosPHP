@@ -92,8 +92,48 @@ and open the template in the editor.
             
             <h3>Promedio: <?php printf($pruebaPromedios[1]) ?></h3>
             <h3>Z: <?php printf($pruebaPromedios[0]) ?></h3>
+            <h2>Chi-Cuadrada</h2> 
+            <table id="tablita3" border="1">
+            <thead>
+                <tr>
+                    <th>Intervalo</th>
+                    <th>Oi</th>
+                    <th>Ei</th>
+                    <th>(Oi-Ei)²/Ei</th>
+                </tr>
+            </thead>
+            <!--<tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>-->
+            <tbody>
+        
+             <?php
+             $tablaChi = $aleatorios->chi_cuadrada(1);
+             //$numerosCeroUno = $aleatorios->arrayPseuPosCeroUno;
+             $contador3 =0;
+             $sumatoria = 0;
+             while($contador3 < count($tablaChi[0]))
+             {
+             ?>
+                <tr>
+                    <td><?php printf($tablaChi[0][$contador3]) ?></td>
+                    <td><?php printf($tablaChi[1][$contador3]) ?></td>
+                    <td><?php printf($cantidadDeNumeros/count($tablaChi[0])) ?></td>
+                    <td><?php printf($tablaChi[2][$contador3]) ?></td>
+                </tr>
+             <?php
+                $sumatoria += $tablaChi[2][$contador3];  
+                $contador3++;
+             }
+            ?>
+                <tr>
+                    <td colspan="3"></td>
+                    <td><b>Sumatoria = </b><?php print $sumatoria;?></td>
+                </tr>
+            </tbody>
+            </table>
+            
             <?php 
             $aleatorios->guardarEnArchivo(1);
+            
             echo "<a href='numerosAleatorios.csv'>Descargar Archivo con numeros Aleatorios</a>";            
             }
             else{

@@ -96,6 +96,9 @@ and open the template in the editor.
             <h3>Promedio: <?php printf($pruebaPromedios[1]) ?></h3>
             <h3>Z: <?php printf($pruebaPromedios[0]) ?></h3>
             <?php 
+            
+            $aleatorios->guardarEnArchivo(0);
+            echo "<a href='numerosAleatorios.csv'>Descargar Archivo con numeros Aleatorios</a>";               
             }
             else{
         ?>

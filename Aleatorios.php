@@ -98,17 +98,17 @@ class Aleatorios {
         //i/n
         for($i=0; $i< count($vectorOrdenado);$i++)
         {
-            $vectorIN[$i] = ($i+1)/count($vectorOrdenado);
+            $vectorIN[$i] = round(($i+1)/count($vectorOrdenado), 3);
         }
         //i/n - F(Xi)
         for($i=0; $i< count($vectorOrdenado);$i++)
         {
-            $vectorRestaUno[$i] = $vectorIN[$i]-$vectorOrdenado[$i];
+            $vectorRestaUno[$i] = round($vectorIN[$i]-$vectorOrdenado[$i], 3);
         }
         //F(Xi)- (i-1)/n
         for($i=0; $i< count($vectorOrdenado);$i++)
         {
-            $vectorRestaDos[$i] = $vectorOrdenado[$i] - (($i)/count($vectorOrdenado));
+            $vectorRestaDos[$i] = round($vectorOrdenado[$i] - (($i)/count($vectorOrdenado)), 3);
         }
         //Dmax y Dmin
         $dMax = $this->mayor($vectorRestaUno);
@@ -120,7 +120,7 @@ class Aleatorios {
         $vectorFinal[1] = $vectorIN;
         $vectorFinal[2] = $vectorRestaUno;
         $vectorFinal[3] = $vectorRestaDos;
-        $vectorFinal[4] = array($dMax,$dMin);
+        $vectorFinal[4] = array(round($dMax, 3),round($dMin,3));
         
         return $vectorFinal;
         
@@ -142,7 +142,7 @@ class Aleatorios {
         }
         
         $z = (($sumatoria -(0.5))*sqrt($n))/(sqrt(1/12));
-        $datos = array($z,$sumatoria);
+        $datos = array(round($z, 3),round($sumatoria, 3));
             
         return $datos;
         
@@ -206,20 +206,36 @@ class Aleatorios {
     }
     
     
-    public function guardarEnArchivo()
+    public function guardarEnArchivo($generador)
     {
         $f=fopen("numerosAleatorios.csv","a+");
-        fwrite($f, "CONGRUENCIAL");
-        fwrite($f, "Numeros del Generador;Numeros de Cero a Uno");
-        for($i =0; $i<count($this->arrayPseuPosCeroUno); $i++)
+        if($generador ==0)
         {
-            fwrite($f, $this->arrayPseuPos[$i]+";"+$this->arrayPseuPosCeroUno[$i]);
+            fwrite($f, "CONGRUENCIAL\n");
+            fwrite($f, "Numeros del Generador ; Numeros de Cero a Uno\n");
+            for($i =0; $i<count($this->arrayPseuPosCeroUno); $i++)
+            {
+                $temp1 = (string)$this->arrayPseuPos[$i];
+                $temp2 = "$temp1;";
+                $temp3 = $this->arrayPseuPosCeroUno[$i];
+                $temp4 = "$temp3\n";
+                fwrite($f, $temp2);
+                fwrite($f, str_replace(".", ",", $temp4));
+            }
         }
-        fwrite($f, "CUADRADOS MEDIOS");
-        fwrite($f, "Numeros del Generador;Numeros de Cero a Uno");
-        for($i =0; $i<count($this->arrayCuadradosCeroUno); $i++)
+        else
         {
-            fwrite($f, $this->arrayCuadrados[$i]+";"+$this->arrayCuadradosCeroUno[$i]);
+            fwrite($f, "CUADRADOS MEDIOS\n");
+            fwrite($f, "Numeros del Generador ; Numeros de Cero a Uno\n");
+            for($i =0; $i<count($this->arrayCuadradosCeroUno); $i++)
+            {
+                $temp1 = (string)$this->arrayCuadrados[$i];
+                $temp2 = "$temp1;";
+                $temp3 = $this->arrayCuadradosCeroUno[$i];
+                $temp4 = "$temp3\n";
+                fwrite($f, $temp2);
+                fwrite($f, str_replace(".", ",", $temp4));
+            }
         }
         fclose($f);
     }

@@ -128,10 +128,24 @@ class Aleatorios {
     
     public function promedios($generador)
     {
+        $sumatoria =0;
+        $n =0;
         if($generador == 0)
-            $vectorOrdenado = $this->promedio($this->arrayPseuPosCeroUno);
-        else 
-            $vectorOrdenado = $this->promedio($this->arrayCuadradosCeroUno);
+        {
+            $sumatoria = $this->promedio($this->arrayPseuPosCeroUno);
+            $n = count($this->arrayPseuPosCeroUno);
+        }
+        else
+        { 
+            $sumatoria = $this->promedio($this->arrayCuadradosCeroUno);
+            $n = count($this->arrayCuadradosCeroUno);
+        }
+        
+        $z = (($sumatoria -(0.5))*sqrt($n))/(sqrt(1/12));
+        $datos = array($z,$sumatoria);
+            
+        return $datos;
+        
     }
     
     private function promedio($vector)
@@ -141,7 +155,7 @@ class Aleatorios {
         {
             $suma += $vector[$i];
         }
-        return $suma;
+        return ($suma / count($vector));
     }
     
     private function mayor($vector)
@@ -191,6 +205,24 @@ class Aleatorios {
         
     }
     
+    
+    public function guardarEnArchivo()
+    {
+        $f=fopen("numerosAleatorios.csv","a+");
+        fwrite($f, "CONGRUENCIAL");
+        fwrite($f, "Numeros del Generador;Numeros de Cero a Uno");
+        for($i =0; $i<count($this->arrayPseuPosCeroUno); $i++)
+        {
+            fwrite($f, $this->arrayPseuPos[$i]+";"+$this->arrayPseuPosCeroUno[$i]);
+        }
+        fwrite($f, "CUADRADOS MEDIOS");
+        fwrite($f, "Numeros del Generador;Numeros de Cero a Uno");
+        for($i =0; $i<count($this->arrayCuadradosCeroUno); $i++)
+        {
+            fwrite($f, $this->arrayCuadrados[$i]+";"+$this->arrayCuadradosCeroUno[$i]);
+        }
+        fclose($f);
+    }
 }
 
 ?>

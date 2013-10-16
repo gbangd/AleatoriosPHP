@@ -86,6 +86,15 @@ and open the template in the editor.
                 </tr>
             </tbody>
             </table>
+            
+            <h2>Prueba de Promedios</h2>
+            
+            <?php
+                $pruebaPromedios = $aleatorios->promedios(0);
+            ?>
+            
+            <h3>Promedio: <?php printf($pruebaPromedios[1]) ?></h3>
+            <h3>Z: <?php printf($pruebaPromedios[0]) ?></h3>
             <?php 
             }
             else{

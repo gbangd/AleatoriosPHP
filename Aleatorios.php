@@ -17,6 +17,8 @@ class Aleatorios {
         $this->arrayPseuPosCeroUno = Array();
         $this->arrayPseuPos = Array();
     }
+        
+    //Generadores 
     
     public function congruencial($a, $c, $m, $Xi, $cantidadDeNumeros)
     {
@@ -25,7 +27,7 @@ class Aleatorios {
         {
             $Xi = (($a*$Xi)+$c)%$m;
             $this->arrayPseuPos[$contador] = $Xi;
-            $this->arrayPseuPosCeroUno[$contador] = round (($Xi /$m), 3);
+            $this->arrayPseuPosCeroUno[$contador] = round(($Xi /($m-1)),3);
             $contador++;
         }
     }
@@ -57,7 +59,7 @@ class Aleatorios {
         }
     }
     
-    public function esPar($vector)
+    private function esPar($vector)
     {
         if(count($vector) % 2 == 0)
             return true;
@@ -65,7 +67,7 @@ class Aleatorios {
         return false;
     }
     
-    public function rotar($dato1)
+    private function rotar($dato1)
     {
         $dato2 = Array();
         for($x= 0; $x<count($dato1); $x++)
@@ -73,6 +75,122 @@ class Aleatorios {
 
         return $dato2;
     }
+    
+    
+    //Pruebas de Frecuencia
+    
+    public function kolmogorov_smirnov($generador)
+    {
+        $vectorOrdenado = Array();
+        $vectorIN = Array();
+        $vectorRestaUno = Array();
+        $vectorRestaDos = Array();
+        
+        $vectorFinal = Array();
+        
+        //F(Xi)
+        if($generador == 0)
+            $vectorOrdenado = $this->ordenar($this->arrayPseuPosCeroUno);
+        else 
+            $vectorOrdenado = $this->ordenar($this->arrayCuadradosCeroUno);
+        
+        
+        //i/n
+        for($i=0; $i< count($vectorOrdenado);$i++)
+        {
+            $vectorIN[$i] = ($i+1)/count($vectorOrdenado);
+        }
+        //i/n - F(Xi)
+        for($i=0; $i< count($vectorOrdenado);$i++)
+        {
+            $vectorRestaUno[$i] = $vectorIN[$i]-$vectorOrdenado[$i];
+        }
+        //F(Xi)- (i-1)/n
+        for($i=0; $i< count($vectorOrdenado);$i++)
+        {
+            $vectorRestaDos[$i] = $vectorOrdenado[$i] - (($i)/count($vectorOrdenado));
+        }
+        //Dmax y Dmin
+        $dMax = $this->mayor($vectorRestaUno);
+        $dMin = $this->menor($vectorRestaDos);
+        
+        
+        //Tabla de Kolmogorov-Smirnov
+        $vectorFinal[0] = $vectorOrdenado;
+        $vectorFinal[1] = $vectorIN;
+        $vectorFinal[2] = $vectorRestaUno;
+        $vectorFinal[3] = $vectorRestaDos;
+        $vectorFinal[4] = array($dMax,$dMin);
+        
+        return $vectorFinal;
+        
+    }
+    
+    public function promedios($generador)
+    {
+        if($generador == 0)
+            $vectorOrdenado = $this->promedio($this->arrayPseuPosCeroUno);
+        else 
+            $vectorOrdenado = $this->promedio($this->arrayCuadradosCeroUno);
+    }
+    
+    private function promedio($vector)
+    {
+        $suma =0;
+        for($i=0;$i<count($vector);$i++)
+        {
+            $suma += $vector[$i];
+        }
+        return $suma;
+    }
+    
+    private function mayor($vector)
+    {
+        $mayor = -9999999;
+        
+        for($i=0; $i< count($vector);$i++)
+        {
+            if(((double) $vector[$i]) > $mayor)
+                $mayor = (double) $vector[$i];
+        }
+        
+        return $mayor;
+    }
+    
+    private function menor($vector)
+    {
+        $menor = 9999999;
+        
+        for($i=0; $i< count($vector);$i++)
+        {
+            if(($vector[$i]) < $menor)
+                $menor = $vector[$i];
+        }
+        
+        return $menor;
+    }
+    
+    private function ordenar($vector)
+    {
+        $vectorOrdenado = $vector;
+        
+        for($i=1;$i<count($vector);$i++)
+        {
+            for($j=0;$j<(count($vector)-$i);$j++)
+            {
+                if($vectorOrdenado[$j]>$vectorOrdenado[$j+1])
+                {
+                    $temp = $vectorOrdenado[$j+1];
+                    $vectorOrdenado[$j+1] = $vectorOrdenado[$j];
+                    $vectorOrdenado[$j] = $temp;
+                }
+            }
+        }
+        
+        return $vectorOrdenado;
+        
+    }
+    
 }
 
 ?>

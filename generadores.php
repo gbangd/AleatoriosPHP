@@ -23,7 +23,7 @@ and open the template in the editor.
                 
                 $aleatorios->congruencial($a, $c, $m, $Xi, $cantidadDeNumeros);
              ?>
-             
+            <h2>Generador Congruencial</h2> 
             <table id="tablita">
             <thead><tr><th>Numeros del Generador</th><th>Numeros entre 0 y 1</th></tr></thead>
             <!--<tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>-->
@@ -44,6 +44,46 @@ and open the template in the editor.
                $contador++;
              }
             ?>
+            </tbody>
+            </table>
+        
+            <h2>Kolmogorov-Smirnov</h2> 
+            <table id="tablita2" border="1">
+            <thead>
+                <tr>
+                    <th>i</th>
+                    <th>F(Xi)</th>
+                    <th>i/n</th>
+                    <th>i/n - F(Xi)</th>
+                    <th>F(Xi)- (i-1)/n</th>
+                </tr>
+            </thead>
+            <!--<tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>-->
+            <tbody>
+        
+             <?php
+             $tabla = $aleatorios->kolmogorov_smirnov(0);
+             //$numerosCeroUno = $aleatorios->arrayPseuPosCeroUno;
+             $contador2 =0;
+             while($contador2 < $cantidadDeNumeros)
+             {
+             ?>
+                <tr>
+                    <td><?php printf((int)$contador2+1) ?></td>
+                    <td><?php printf($tabla[0][$contador2]) ?></td>
+                    <td><?php printf($tabla[1][$contador2]) ?></td>
+                    <td><?php printf($tabla[2][$contador2]) ?></td>
+                    <td><?php printf($tabla[3][$contador2]) ?></td>
+                </tr>
+             <?php
+               $contador2++;
+             }
+            ?>
+                <tr>
+                    <td colspan="3"></td>
+                    <td><b>D+ = </b> <?php printf($tabla[4][0]) ?></td>
+                    <td><b>D- = </b> <?php printf($tabla[4][1]) ?></td>
+                </tr>
             </tbody>
             </table>
             <?php 

@@ -9,19 +9,16 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        <?php
+         <?php
             require './Aleatorios.php';
             $aleatorios = new Aleatorios();
             
-            if(isset($_REQUEST['a']) && isset($_REQUEST['c']) && isset($_REQUEST['m']) && isset($_REQUEST['xi']) && isset($_REQUEST['cantidad']))
+            if(isset($_REQUEST['xi']) && isset($_REQUEST['cantidad']))
             {
-                $a = (double) $_REQUEST['a'];
-                $c = (double) $_REQUEST['c'];
-                $m = (double) $_REQUEST['m'];
                 $Xi = (double) $_REQUEST['xi'];
                 $cantidadDeNumeros = (double) $_REQUEST['cantidad'];
                 
-                $aleatorios->congruencial($a, $c, $m, $Xi, $cantidadDeNumeros);
+                $aleatorios->cuadradosMedios($Xi, $cantidadDeNumeros);
              ?>
              
             <table id="tablita">
@@ -30,8 +27,8 @@ and open the template in the editor.
             <tbody>
         
              <?php
-             $numeros = $aleatorios->arrayPseuPos;
-             $numerosCeroUno = $aleatorios->arrayPseuPosCeroUno;
+             $numeros = $aleatorios->arrayCuadrados;
+             $numerosCeroUno = $aleatorios->arrayCuadradosCeroUno;
              $contador =0;
              while($contador < $cantidadDeNumeros)
              {
@@ -50,11 +47,8 @@ and open the template in the editor.
             }
             else{
         ?>
-        <form action="generadores.php" method="post">
+        <form action="cuadrados.php" method="post">
             <p><input type="text" id="semilla" name="xi" value="" placeholder="Semilla"></p>
-            <p><input type="text" id ="a" name="a" value="" placeholder="Valor de A"></p>
-            <p><input type="text" id ="c" name="c" value="" placeholder="Valor de C"></p>
-            <p><input type="text" id ="m" name="m" value="" placeholder="Valor de M"></p>
             <p><input type="text" id ="cant" name="cantidad" value="" placeholder="Cantidad de Numeros"></p>
             <p class="submit">
             <!--<button onclick="congruencial()">Generar</button>-->

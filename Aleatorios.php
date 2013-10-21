@@ -282,9 +282,16 @@ class Aleatorios {
         
         while($i < count($vector))
         {
-            if($inicioIntervalo <= $vector[$i] && $vector[$i] <= $finIntervalo)
-                $ocurrencias++;
-            
+            if($finIntervalo != 1)
+            {
+              if($inicioIntervalo <= $vector[$i] && $vector[$i] < $finIntervalo)
+                  $ocurrencias++;
+            }
+            else
+            {
+              if($inicioIntervalo <= $vector[$i] && $vector[$i] <= $finIntervalo)
+                  $ocurrencias++;
+            }
             $i++;
         }
         
